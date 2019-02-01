@@ -1,20 +1,26 @@
 'use strict';
 
-const express = require('express');
-
-// Constants
-const PORT = process.env.PORT || 8080
-const HOST = '0.0.0.0';
+const express      = require('express');
+const path         = require('path');
+const errorhandler = require('errorhandler');
+const serveStatic  = require('serve-static');
+const PORT         = process.env.PORT || 8080
+const HOST         = '0.0.0.0';
 
 // App
 const app = express();
+
+// app.use(errorhandler);
+
+app.use(serveStatic(path.join(__dirname, '/')));
+
 app.get('/percentage/:year', (req, res) => {
   const year = parseInt(req.param.year);
   
   res.send({
     days_of_a_year: days_of_a_year(year),
-    days_since: getDay(),
-    percentage: ((getDay() * 100) / days_of_a_year(year)).toFixed(2)
+    days_since:     getDay(),
+    percentage:     ((getDay() * 100) / days_of_a_year(year)).toFixed(2)
   });
 });
 
